@@ -1,0 +1,470 @@
+<html>
+	<!-- Firebase App is always required and must be first -->
+	<script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
+
+	<!-- Add additional services that you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-database.js"></script>
+	
+	<script>
+		var gamePinStr;
+        var userBuzzedFirst = false;
+        var audio = new Audio("https://raw.githubusercontent.com/wztlei/buzz-for-the-top/master/buzzer.mp3");
+        var newBuzzer = true;
+		
+		const GAMES_KEY;
+        const STATE_KEY;
+        const WAITING_STATE;
+        const READY_STATE;
+        const BUZZ_STATE;
+        const CONFLICT_KEY;
+        const PLAYERS_KEY;
+        const TEST_KEY;
+           
+		function hostGame() {
+            
+            
+			var menuDiv = document.getElementById("menuDiv");
+            menuDiv.style.display = "none";
+            
+            var hostDiv = document.getElementById("hostDiv");
+            hostDiv.style.display = "inline";
+            
+            gamePinStr = randomIntFromInterval(1000,9999).toString();
+            document.getElementById("hostGamePin").innerHTML = 
+                "Game PIN: " + gamePinStr;
+            
+            var gameRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr);
+            var playersRef = firebase.database().ref(GAMES_KEY + "/" + gamePinStr 
+                + "/" + PLAYERS_KEY);
+            
+            gameRef.set({
+				state: WAITING_STATE,
+                players: 0
+			});
+            
+
+            playersRef.on('value', function(snapshot) {
+                document.getElementById("players").innerHTML = 
+                    snapshot.val().toString() + " Player(s) Ready";
+            });
+		}
+        
+         // min and max included
+        function randomIntFromInterval(min,max) {
+            return Math.floor(Math.random()*(max-min+1)+min);
+        }
+        
+        function joinGame() {
+			var menuDiv = document.getElementById("menuDiv");
+            menuDiv.style.display = "none";
+            
+            var joinDiv = document.getElementById("joinDiv");
+            joinDiv.style.display = "inline";
+		}
+        
+        function enterGamePin() {
+            gamePinStr = document.getElementById("gamePinInput").value;
+            var gamesRef = firebase.database().ref(GAMES_KEY);
+            
+            gamesRef.once('value', function (snapshot) {
+                if (snapshot.hasChild(gamePinStr)) {
+                    waitForGameStart();
+                } else {
+                    alert("No game found with that PIN.");
+                }
+            });
+        }
+        
+        function waitForGameStart() {
+            var joinDiv = document.getElementById("joinDiv");
+            joinDiv.style.display = "none";
+            
+            var waitDiv = document.getElementById("waitDiv");
+            waitDiv.style.display = "inline";
+            
+            var gameRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr);
+            var stateRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                   + "/" + STATE_KEY);
+            var playersRef = firebase.database().ref(GAMES_KEY + "/" + gamePinStr 
+                                                     + "/" + PLAYERS_KEY);
+            
+            playersRef.once('value', function (snapshot) {
+                var oldNumPlayers = parseInt(snapshot.val());
+                var newNumPlayers = oldNumPlayers + 1;
+                
+                gameRef.update({
+                    players: newNumPlayers
+                });
+                
+            });
+            
+            stateRef.on('value', function(snapshot) {
+                if (snapshot.val() != WAITING_STATE) {
+                    playGame();
+                }
+            });   
+        }
+        
+        function startGame() {
+            var hostDiv = document.getElementById("hostDiv");
+            hostDiv.style.display = "none";
+            
+            var runGameDiv = document.getElementById("runGameDiv");
+            runGameDiv.style.display = "inline";
+            
+            document.getElementById("hostGamePin2").innerHTML = 
+                "Game PIN: " + gamePinStr;
+            
+            var gameRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr);
+            var stateRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                   + "/" + STATE_KEY);
+            
+            gameRef.update({
+                state: READY_STATE
+            });
+        
+            stateRef.on('value', function (snapshot) {
+                var gameState = snapshot.val().toString();
+                
+                
+                if (gameState == READY_STATE) {
+                    document.getElementById("reset").style.background='#D40000';
+                    document.getElementById("stateTextHost").innerHTML = 
+                        "Status: Ready";
+                    newBuzzer = true;
+                } else if (gameState == BUZZ_STATE) {
+                    document.getElementById("reset").style.background='#47d147';
+                    document.getElementById("stateTextHost").innerHTML = 
+                        "Status: Someone has buzzed!";
+                    if (newBuzzer == true) {
+                        audio.play();
+                        newBuzzer = false;
+                    }
+                }
+                
+            });
+        }
+        
+        function playGame() {
+            var waitDiv = document.getElementById("waitDiv");
+            waitDiv.style.display = "none";
+            
+            var playGameDiv = document.getElementById("playGameDiv");
+            playGameDiv.style.display = "inline";
+            
+
+            
+            var stateRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                   + "/" + STATE_KEY);
+
+            
+            stateRef.on('value', function (snapshot) {
+                var gameState = snapshot.val().toString();
+                
+                
+                if (gameState == READY_STATE) {
+                    document.getElementById("stateTextPlay").innerHTML = 
+                        "Status: Ready";
+                    document.getElementById("buzzer").style.background='#D40000';
+                    userBuzzedFirst = false;
+                    newBuzzer = true;
+                } else if (gameState == BUZZ_STATE && userBuzzedFirst === true) {
+                    document.getElementById("buzzer").style.background='#47d147';
+                    document.getElementById("stateTextPlay").innerHTML = 
+                        "Status: You buzzed first!";
+                    
+                    if (newBuzzer) {
+                        audio.play();
+                        newBuzzer = false;
+                    }
+                } else if (gameState == BUZZ_STATE && userBuzzedFirst === false) {
+                    document.getElementById("buzzer").style.background='#D40000';
+                    document.getElementById("stateTextPlay").innerHTML = 
+                        "Status: Someone has buzzed.";
+                    
+                    if (newBuzzer) {
+                        audio.play();
+                        newBuzzer = false;
+                    }
+                } else {
+                    alert("You have found a bug! Please email the developer.");
+                }
+                
+            });
+        }
+        
+        function onBuzzEvent() {
+            var gameRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr);
+            var stateRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                   + "/" + STATE_KEY);
+            var conflictRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                   + "/" + CONFLICT_KEY);
+            
+            
+            stateRef.once('value', function (snapshot) {
+                var gameState = snapshot.val().toString();
+
+                if (gameState === READY_STATE) {
+                   
+                    gameRef.update({
+                        state: BUZZ_STATE
+                    }, function(error) {
+                        if (error) {
+                            // The write failed...
+                        } else {
+                            var conflictChildRef = conflictRef.push();
+                            var conflictChildKey = conflictChildRef.key;
+                            conflictChildRef.set(1);
+                            checkForConflicts(conflictChildKey);
+
+                            
+                        }
+                    });
+                    
+                    
+                } else if (gameState === BUZZ_STATE && userBuzzedFirst === true) {
+                    document.getElementById("buzzer").style.background='#47d147';
+                    document.getElementById("stateTextPlay").innerHTML = 
+                        "Status: You buzzed first!";
+
+                } else if (gameState === BUZZ_STATE && userBuzzedFirst === false) {
+                    document.getElementById("stateText").innerHTML = 
+                        "Status: Someone has buzzed.";
+                    document.getElementById("buzzer").style.background='#D40000';
+
+                } else {
+                    alert("You have found a bug! Please notify the developer.");
+                }
+            });
+     
+        }
+        
+        function checkForConflicts(conflictChildKey) {
+            var conflictRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                      + "/" + CONFLICT_KEY);
+            
+            conflictRef.limitToFirst(1).once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    if (child.key == conflictChildKey) {
+                        // Data saved successfully!
+                        document.getElementById("buzzer").style.background=
+                            '#47d147';
+                        document.getElementById("stateTextPlay").innerHTML 
+                            = "Status: You buzzed first!";
+
+                        if (userBuzzedFirst) {
+                            audio.play();
+                            userBuzzedFirst = true;
+                        }
+                    }
+                });
+            });
+        }
+        
+        function onTestEvent() {
+            var testRef = firebase.database().ref(TEST_KEY);
+            
+            testRef.update({
+                x: 1
+            }, function(error) {
+                if (error) {
+                    // The write failed...
+                    alert("The test failed! Please check you network connection.");
+                } else {
+                    // Data saved successfully!
+                    alert("The test succeeded! The buzzer works.");
+                }
+            });
+            
+        }
+        
+        function onResetEvent() {
+            var gameRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr);
+            gameRef.update({
+                state: READY_STATE,
+                conflict: null
+            });
+            
+        }
+        
+		
+		 
+
+	</script>
+	
+	<style>
+        
+        body {
+            text-align: center;
+            font-family:"Arial Black", Gadget, sans-serif;         
+        }
+        
+        div {
+            display: none;
+        }
+
+        
+        #menuDiv {
+            display: inline;
+        }
+        
+		h1 {
+		  font-size:40px;
+            
+		}
+	
+		button {
+            font-family:"Arial Black", Gadget, sans-serif;
+			font-size:18px;
+			background-color:#F08A24;
+			height: 40px;
+			width: 150px;
+		}
+        
+        #startGame {
+			
+        }
+        
+        #gamePinInput {
+            font-size:14px;
+            font-family:"Arial Black", Gadget, sans-serif;
+        }
+        
+        #hostGame {
+            font-family:"Arial Black", Gadget, sans-serif;
+			font-size:24px;
+			background-color:#F08A24;
+			height: 40px;
+			width: 150px;
+        }
+        
+        #joinGame {
+            font-family:"Arial Black", Gadget, sans-serif;
+			font-size:24px;
+			background-color:#F08A24;
+			height: 40px;
+			width: 150px;
+        }
+        
+        #buzzer {
+            background-color: #D40000;
+            border-radius: 100%;
+            font-family:"Arial Black", Gadget, sans-serif;
+            font-size: 24px;
+            text-align: center;
+            height: 200px;
+            width: 200px;
+            border: 2px solid grey;
+        }
+        
+        #testBuzzer {
+            background-color: #F08A24;
+            font-family:"Arial Black", Gadget, sans-serif;
+            font-size: 14px;
+            height: 30px;
+            width: 100px;
+        }
+        
+        #testReset {
+            background-color: #F08A24;
+            font-family:"Arial Black", Gadget, sans-serif;
+            font-size: 14px;
+            height: 30px;
+            width: 100px;
+        }
+        
+        #stateTextPlay {
+            text-align: center;
+            font-family:"Arial Black", Gadget, sans-serif;
+            font-size: 14px;
+        }
+        
+        #stateTextRun{
+            text-align: center;
+            font-family:"Arial Black", Gadget, sans-serif;
+            font-size: 14px;
+        }
+        
+        #reset {
+            text-align: center;
+            font-family:"Arial Black", Gadget, sans-serif;
+            font-size: 14px;
+        }
+	
+	</style>
+
+
+	<body>
+        <!-- menu activity -->
+        <div id="menuDiv">
+            <h1> Buzz for the Top! </h1>
+            <button onclick="hostGame()" id="hostGame"> 
+                Host 
+            </button> 
+            <p></p>
+            <button onclick = "joinGame()" id="joinGame"> 
+                Join 
+            </button>
+        </div>
+        
+        <!-- Host activity -->
+        <div id="hostDiv">
+            <h3 id="hostGamePin"></h3>
+            <p id="players"></p>
+            <button id="startGame" onclick="startGame()">
+                Start Game
+            </button>
+        </div>
+        
+        <!-- Join activity -->
+        <div id="joinDiv">
+            <input type = "number" id = "gamePinInput" placeHolder="Game PIN"> 
+            <br><br>
+            <button id="enterGamePin" onclick="enterGamePin()">
+                Enter
+            </button>
+        </div>
+        
+        <!-- Wait activity -->
+        <div id="waitDiv">
+            <p>Waiting for the game to start ...</p>
+        </div>
+        
+        <!-- Run game activity -->
+        <div id="runGameDiv">
+            <h3 id="hostGamePin2"></h3>
+            
+            <button id="reset" onclick="onResetEvent()">
+                Reset
+            </button>
+            <br><br>
+            <span id="stateTextHost"> 
+                &nbsp &nbsp &nbsp Status: Ready &nbsp &nbsp &nbsp 
+            </span>
+            
+            <br> <br>
+            <button id="testReset" onclick="onTestEvent()">
+                Test
+            </button>
+            
+        </div>
+        
+        <!-- Play activity -->
+        <div id="playGameDiv">
+            <button id="buzzer" onpointerdown="onBuzzEvent()">
+                BUZZ!
+            </button>
+            <br>
+            <span id="stateTextPlay"> &nbsp &nbsp &nbsp Status: Ready &nbsp &nbsp &nbsp </span>
+            <br> <br>
+            <button id="testBuzzer" onclick="onTestEvent()">
+                Test
+            </button>
+            
+            
+        </div>
+		
+
+	</body>
+</html>
