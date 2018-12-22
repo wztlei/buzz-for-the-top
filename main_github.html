@@ -7,22 +7,13 @@
 	<script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-database.js"></script>
 	
 	<script>
-		var gamePinStr;
-        var userBuzzedFirst = false;
+        
+    
+		var _0x4971=['aW5pdGlhbGl6ZUFwcA==','Z2FtZXM=','c3RhdGU=','d2FpdGluZw==','cmVhZHk=','YnV6eg==','Y29uZmxpY3Q=','cGxheWVycw==','dGVzdA==','YXBpS2V5','QUl6YVN5RG9qYjdpUmlkWm9wS3NsOFA0eEdoU1VRbDR2dml5Zkcw','YXV0aERvbWFpbg==','YnV6ei10by10aGUtdG9wLmZpcmViYXNlYXBwLmNvbQ==','ZGF0YWJhc2VVUkw=','aHR0cHM6Ly9idXp6LXRvLXRoZS10b3AuZmlyZWJhc2Vpby5jb20=','cHJvamVjdElk','YnV6ei10by10aGUtdG9w','c3RvcmFnZUJ1Y2tldA==','YnV6ei10by10aGUtdG9wLmFwcHNwb3QuY29t','bWVzc2FnaW5nU2VuZGVySWQ=','MjMwODg4OTIzMTk4'];(function(_0x165eb7,_0x2e6f37){var _0x352fe5=function(_0x5c4d40){while(--_0x5c4d40){_0x165eb7['push'](_0x165eb7['shift']());}};var _0x46132c=function(){var _0x202b78={'data':{'key':'cookie','value':'timeout'},'setCookie':function(_0x2b2f9c,_0x33d01a,_0x4816c3,_0x3ceeba){_0x3ceeba=_0x3ceeba||{};var _0x3ab669=_0x33d01a+'='+_0x4816c3;var _0xa4631b=0x0;for(var _0xa4631b=0x0,_0x16ddc7=_0x2b2f9c['length'];_0xa4631b<_0x16ddc7;_0xa4631b++){var _0x4f4b40=_0x2b2f9c[_0xa4631b];_0x3ab669+=';\x20'+_0x4f4b40;var _0x231fa9=_0x2b2f9c[_0x4f4b40];_0x2b2f9c['push'](_0x231fa9);_0x16ddc7=_0x2b2f9c['length'];if(_0x231fa9!==!![]){_0x3ab669+='='+_0x231fa9;}}_0x3ceeba['cookie']=_0x3ab669;},'removeCookie':function(){return'dev';},'getCookie':function(_0x564dc3,_0x765d56){_0x564dc3=_0x564dc3||function(_0x822173){return _0x822173;};var _0x1d6237=_0x564dc3(new RegExp('(?:^|;\x20)'+_0x765d56['replace'](/([.$?*|{}()[]\/+^])/g,'$1')+'=([^;]*)'));var _0x51afc9=function(_0x2d5062,_0x1bfb16){_0x2d5062(++_0x1bfb16);};_0x51afc9(_0x352fe5,_0x2e6f37);return _0x1d6237?decodeURIComponent(_0x1d6237[0x1]):undefined;}};var _0x4bec0d=function(){var _0x14f29a=new RegExp('\x5cw+\x20*\x5c(\x5c)\x20*{\x5cw+\x20*[\x27|\x22].+[\x27|\x22];?\x20*}');return _0x14f29a['test'](_0x202b78['removeCookie']['toString']());};_0x202b78['updateCookie']=_0x4bec0d;var _0x29cd88='';var _0x5b5d5a=_0x202b78['updateCookie']();if(!_0x5b5d5a){_0x202b78['setCookie'](['*'],'counter',0x1);}else if(_0x5b5d5a){_0x29cd88=_0x202b78['getCookie'](null,'counter');}else{_0x202b78['removeCookie']();}};_0x46132c();}(_0x4971,0x159));var _0x5cdc=function(_0x30ba4a,_0x435d6f){_0x30ba4a=_0x30ba4a-0x0;var _0x524cf2=_0x4971[_0x30ba4a];if(_0x5cdc['BHmDFa']===undefined){(function(){var _0x57e807;try{var _0x51bcd7=Function('return\x20(function()\x20'+'{}.constructor(\x22return\x20this\x22)(\x20)'+');');_0x57e807=_0x51bcd7();}catch(_0xb75ae3){_0x57e807=window;}var _0x2e59e8='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';_0x57e807['atob']||(_0x57e807['atob']=function(_0x1e23cd){var _0xc7d3f5=String(_0x1e23cd)['replace'](/=+$/,'');for(var _0x38f1c2=0x0,_0x6f1db1,_0x4901cd,_0x1c620e=0x0,_0x233031='';_0x4901cd=_0xc7d3f5['charAt'](_0x1c620e++);~_0x4901cd&&(_0x6f1db1=_0x38f1c2%0x4?_0x6f1db1*0x40+_0x4901cd:_0x4901cd,_0x38f1c2++%0x4)?_0x233031+=String['fromCharCode'](0xff&_0x6f1db1>>(-0x2*_0x38f1c2&0x6)):0x0){_0x4901cd=_0x2e59e8['indexOf'](_0x4901cd);}return _0x233031;});}());_0x5cdc['aOGimn']=function(_0x6fb225){var _0x35ae01=atob(_0x6fb225);var _0x5c0a8a=[];for(var _0x27dd09=0x0,_0xc522d5=_0x35ae01['length'];_0x27dd09<_0xc522d5;_0x27dd09++){_0x5c0a8a+='%'+('00'+_0x35ae01['charCodeAt'](_0x27dd09)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x5c0a8a);};_0x5cdc['gOgTUw']={};_0x5cdc['BHmDFa']=!![];}var _0x36d4ad=_0x5cdc['gOgTUw'][_0x30ba4a];if(_0x36d4ad===undefined){var _0x14a446=function(_0x2f94e0){this['qOPbdT']=_0x2f94e0;this['yrXbxP']=[0x1,0x0,0x0];this['QXUFYK']=function(){return'newState';};this['cPHmbm']='\x5cw+\x20*\x5c(\x5c)\x20*{\x5cw+\x20*';this['HMggrp']='[\x27|\x22].+[\x27|\x22];?\x20*}';};_0x14a446['prototype']['rFICuV']=function(){var _0x40df22=new RegExp(this['cPHmbm']+this['HMggrp']);var _0x21259c=_0x40df22['test'](this['QXUFYK']['toString']())?--this['yrXbxP'][0x1]:--this['yrXbxP'][0x0];return this['IBYeTk'](_0x21259c);};_0x14a446['prototype']['IBYeTk']=function(_0x1c6a52){if(!Boolean(~_0x1c6a52)){return _0x1c6a52;}return this['ovLPns'](this['qOPbdT']);};_0x14a446['prototype']['ovLPns']=function(_0x537b4f){for(var _0x2861c9=0x0,_0x4ed515=this['yrXbxP']['length'];_0x2861c9<_0x4ed515;_0x2861c9++){this['yrXbxP']['push'](Math['round'](Math['random']()));_0x4ed515=this['yrXbxP']['length'];}return _0x537b4f(this['yrXbxP'][0x0]);};new _0x14a446(_0x5cdc)['rFICuV']();_0x524cf2=_0x5cdc['aOGimn'](_0x524cf2);_0x5cdc['gOgTUw'][_0x30ba4a]=_0x524cf2;}else{_0x524cf2=_0x36d4ad;}return _0x524cf2;};var _0x373e14=function(){var _0x1d6621=!![];return function(_0x3b7557,_0x4ee8c6){var _0x489f16=_0x1d6621?function(){if(_0x4ee8c6){var _0x4c1630=_0x4ee8c6['apply'](_0x3b7557,arguments);_0x4ee8c6=null;return _0x4c1630;}}:function(){};_0x1d6621=![];return _0x489f16;};}();var _0x5044ff=_0x373e14(this,function(){var _0x36df3f=function(){return'\x64\x65\x76';},_0x18a704=function(){return'\x77\x69\x6e\x64\x6f\x77';};var _0x16bb4e=function(){var _0x2f4571=new RegExp('\x5c\x77\x2b\x20\x2a\x5c\x28\x5c\x29\x20\x2a\x7b\x5c\x77\x2b\x20\x2a\x5b\x27\x7c\x22\x5d\x2e\x2b\x5b\x27\x7c\x22\x5d\x3b\x3f\x20\x2a\x7d');return!_0x2f4571['\x74\x65\x73\x74'](_0x36df3f['\x74\x6f\x53\x74\x72\x69\x6e\x67']());};var _0x3f6ede=function(){var _0x429677=new RegExp('\x28\x5c\x5c\x5b\x78\x7c\x75\x5d\x28\x5c\x77\x29\x7b\x32\x2c\x34\x7d\x29\x2b');return _0x429677['\x74\x65\x73\x74'](_0x18a704['\x74\x6f\x53\x74\x72\x69\x6e\x67']());};var _0xdfe0f6=function(_0x12f48b){var _0xf4a5d2=~-0x1>>0x1+0xff%0x0;if(_0x12f48b['\x69\x6e\x64\x65\x78\x4f\x66']('\x69'===_0xf4a5d2)){_0x5008b3(_0x12f48b);}};var _0x5008b3=function(_0x178d3c){var _0x34d75f=~-0x4>>0x1+0xff%0x0;if(_0x178d3c['\x69\x6e\x64\x65\x78\x4f\x66']((!![]+'')[0x3])!==_0x34d75f){_0xdfe0f6(_0x178d3c);}};if(!_0x16bb4e()){if(!_0x3f6ede()){_0xdfe0f6('\x69\x6e\x64\u0435\x78\x4f\x66');}else{_0xdfe0f6('\x69\x6e\x64\x65\x78\x4f\x66');}}else{_0xdfe0f6('\x69\x6e\x64\u0435\x78\x4f\x66');}});_0x5044ff();var config={};config[_0x5cdc('0x0')]=_0x5cdc('0x1');config[_0x5cdc('0x2')]=_0x5cdc('0x3');config[_0x5cdc('0x4')]=_0x5cdc('0x5');config[_0x5cdc('0x6')]=_0x5cdc('0x7');config[_0x5cdc('0x8')]=_0x5cdc('0x9');config[_0x5cdc('0xa')]=_0x5cdc('0xb');firebase[_0x5cdc('0xc')](config);var gamePinStr;var userBuzzedFirst=![];const GAMES_KEY=_0x5cdc('0xd');const STATE_KEY=_0x5cdc('0xe');const WAITING_STATE=_0x5cdc('0xf');const READY_STATE=_0x5cdc('0x10');const BUZZ_STATE=_0x5cdc('0x11');const CONFLICT_KEY=_0x5cdc('0x12');const PLAYERS_KEY=_0x5cdc('0x13');const TEST_KEY=_0x5cdc('0x14');
         var audio = new Audio("https://raw.githubusercontent.com/wztlei/buzz-for-the-top/master/buzzer.mp3");
         var newBuzzer = true;
 		
-		const GAMES_KEY;
-        const STATE_KEY;
-        const WAITING_STATE;
-        const READY_STATE;
-        const BUZZ_STATE;
-        const CONFLICT_KEY;
-        const PLAYERS_KEY;
-        const TEST_KEY;
-           
-		function hostGame() {
-            
+		function hostGame() {            
             
 			var menuDiv = document.getElementById("menuDiv");
             menuDiv.style.display = "none";
@@ -169,26 +160,17 @@
                     document.getElementById("buzzer").style.background='#D40000';
                     userBuzzedFirst = false;
                     newBuzzer = true;
-                } else if (gameState == BUZZ_STATE && userBuzzedFirst === true) {
-                    document.getElementById("buzzer").style.background='#47d147';
-                    document.getElementById("stateTextPlay").innerHTML = 
-                        "Status: You buzzed first!";
-                    
-                    if (newBuzzer) {
-                        audio.play();
-                        newBuzzer = false;
-                    }
+					var conflictRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
+                                                      + "/" + CONFLICT_KEY);
+					conflictRef.off();
                 } else if (gameState == BUZZ_STATE && userBuzzedFirst === false) {
                     document.getElementById("buzzer").style.background='#D40000';
                     document.getElementById("stateTextPlay").innerHTML = 
                         "Status: Someone has buzzed.";
                     
                     if (newBuzzer) {
-                        audio.play();
                         newBuzzer = false;
                     }
-                } else {
-                    alert("You have found a bug! Please email the developer.");
                 }
                 
             });
@@ -209,32 +191,18 @@
                    
                     gameRef.update({
                         state: BUZZ_STATE
-                    }, function(error) {
-                        if (error) {
-                            // The write failed...
-                        } else {
-                            var conflictChildRef = conflictRef.push();
-                            var conflictChildKey = conflictChildRef.key;
-                            conflictChildRef.set(1);
-                            checkForConflicts(conflictChildKey);
-
-                            
-                        }
                     });
-                    
-                    
-                } else if (gameState === BUZZ_STATE && userBuzzedFirst === true) {
-                    document.getElementById("buzzer").style.background='#47d147';
-                    document.getElementById("stateTextPlay").innerHTML = 
-                        "Status: You buzzed first!";
-
+					
+					var conflictChildRef = conflictRef.push();
+					var conflictChildKey = conflictChildRef.key;
+					conflictRef.set(conflictChildKey);
+					checkForConflicts(conflictChildKey);
+					
                 } else if (gameState === BUZZ_STATE && userBuzzedFirst === false) {
-                    document.getElementById("stateText").innerHTML = 
+                    document.getElementById("stateTextPlay").innerHTML = 
                         "Status: Someone has buzzed.";
                     document.getElementById("buzzer").style.background='#D40000';
 
-                } else {
-                    alert("You have found a bug! Please notify the developer.");
                 }
             });
      
@@ -243,34 +211,42 @@
         function checkForConflicts(conflictChildKey) {
             var conflictRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr
                                                       + "/" + CONFLICT_KEY);
-            
-            conflictRef.limitToFirst(1).once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
-                    if (child.key == conflictChildKey) {
-                        // Data saved successfully!
-                        document.getElementById("buzzer").style.background=
-                            '#47d147';
-                        document.getElementById("stateTextPlay").innerHTML 
-                            = "Status: You buzzed first!";
 
-                        if (userBuzzedFirst) {
-                            audio.play();
-                            userBuzzedFirst = true;
-                        }
-                    }
-                });
+			//alert(conflictChildKey);
+			var buzzFirstDisplay;
+            conflictRef.on("value", function(snapshot) {
+                var conflictVal = snapshot.val().toString();
+				
+				
+				if (conflictVal == conflictChildKey) {
+					clearTimeout(buzzFirstDisplay);
+					
+					buzzFirstDisplay = setTimeout(function(){
+						document.getElementById("buzzer").style.background
+							= '#47d147';
+						document.getElementById("stateTextPlay").innerHTML 
+							= "Status: You buzzed first!";
+						userBuzzedFirst = true;
+					}, 500); 
+					
+				} else if (conflictVal < conflictChildKey) {
+					clearTimeout(buzzFirstDisplay);
+					
+					document.getElementById("stateTextPlay").innerHTML = 
+						"Status: Someone has buzzed.";
+					document.getElementById("buzzer").style.background='#D40000';
+					userBuzzedFirst = false;
+				} else {
+					conflictRef.set(conflictChildKey);
+				}
             });
         }
         
         function onTestEvent() {
             var testRef = firebase.database().ref(TEST_KEY);
             
-            testRef.update({
-                x: 1
-            }, function(error) {
+            testRef.set("test-set", function(error) {
                 if (error) {
-                    // The write failed...
-                    alert("The test failed! Please check you network connection.");
                 } else {
                     // Data saved successfully!
                     alert("The test succeeded! The buzzer works.");
@@ -281,10 +257,14 @@
         
         function onResetEvent() {
             var gameRef = firebase.database().ref(GAMES_KEY+"/"+gamePinStr);
+			
+			
             gameRef.update({
                 state: READY_STATE,
                 conflict: null
             });
+			
+			
             
         }
         
@@ -329,6 +309,7 @@
         #gamePinInput {
             font-size:14px;
             font-family:"Arial Black", Gadget, sans-serif;
+			text-align: center;
         }
         
         #hostGame {
